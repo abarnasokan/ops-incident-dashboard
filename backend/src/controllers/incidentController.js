@@ -40,6 +40,12 @@ const createIncident = async (req, res) => {
     try {
         console.log("POST /api/incidents body:", req.body);
 
+        if (!req.body) {
+            return res.status(400).json({
+                message: "Request body is missing. Ensure you are sending JSON and the 'Content-Type: application/json' header is set.",
+            });
+        }
+
         const { title, description, severity, category, assigned_to } = req.body;
 
         if (!title || !description || !severity) {
@@ -67,6 +73,13 @@ const createIncident = async (req, res) => {
 const updateIncident = async (req, res) => {
     try {
         const { id } = req.params;
+
+        if (!req.body) {
+            return res.status(400).json({
+                message: "Request body is missing. Ensure you are sending JSON and the 'Content-Type: application/json' header is set.",
+            });
+        }
+
         const { title, description, severity, status, category, assigned_to } = req.body;
 
         if (!title || !description || !severity || !status) {
