@@ -1,30 +1,49 @@
 # Ops Incident Dashboard
 
-A full-stack incident management dashboard inspired by real-world operations and support workflows.
+## Overview
 
-This project is being built as a flagship portfolio project to demonstrate backend API development, PostgreSQL database design, incident lifecycle tracking, and eventually a React-based operational dashboard.
+Incident management platform inspired by real-world operational support workflows.
+
+## Features
+
+- Incident CRUD
+- User management
+- PostgreSQL persistence
+- Input validation
+- Incident status tracking
 
 ## Tech Stack
 
 - Node.js
-- Express.js
+- Express
 - PostgreSQL
-- Postman for API testing
-- React planned for frontend
-- Docker planned for containerization
+- Docker (planned)
+- React (planned)
 
-## Current Progress
+## API Endpoints
 
-### Completed
+### Incidents
 
-- Created backend Express server
-- Configured environment variables using `.env`
-- Fixed local macOS port conflict by moving API from port `5000` to `5001`
-- Connected backend to local PostgreSQL database
-- Created `incidents` table
-- Built incident CRUD route structure
-- Implemented incident controller functions
-- Tested health endpoint:
+GET /api/incidents
+POST /api/incidents
+PUT /api/incidents/:id
 
-```http
-GET /health
+### Users
+
+GET /api/users
+POST /api/users
+
+## Database Schema
+
+users
+incidents
+comments
+status_history
+
+## Future Enhancements
+
+- JWT Authentication
+- React Dashboard
+- Metrics & Reporting
+- Docker Deployment
+- AI Log Analysis
