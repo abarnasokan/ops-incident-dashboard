@@ -21,9 +21,14 @@ This project automates the first pass of that triage: it captures real telemetry
 ## Current Status
 
 - [x] Incident CRUD API
-- [x] User management
-- [x] PostgreSQL persistence + schema (users, incidents, comments, status_history)
-- [x] Input validation
+- [x] Basic user management
+- [x] PostgreSQL persistence for users and incidents
+- [x] Incident creation validation
+- [x] Route ID validation
+- [ ] User creation validation
+- [ ] Incident update validation
+- [ ] Reproducible database migrations
+- [ ] Comments and status-history APIs
 - [ ] Everything below — in progress, see roadmap
 
 ## Roadmap
@@ -69,15 +74,19 @@ This project automates the first pass of that triage: it captures real telemetry
 ## API Endpoints
 
 ### Incidents
-```
-GET  /api/incidents
-POST /api/incidents
-PUT  /api/incidents/:id
+
+```http
+GET    /api/incidents
+GET    /api/incidents/:id
+POST   /api/incidents
+PUT    /api/incidents/:id
+DELETE /api/incidents/:id
 ```
 
 ### Users
 ```
 GET  /api/users
+GET  /api/users/:id
 POST /api/users
 ```
 
