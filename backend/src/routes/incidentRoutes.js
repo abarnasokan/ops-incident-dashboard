@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const validateIncident = require("../middleware/incidentValidation");
+const validateId = require("../middleware/idValidation");
 
 const {
     getIncidents,
@@ -17,8 +18,8 @@ router.post(
 );
 
 router.get("/", getIncidents);
-router.get("/:id", getIncidentById);
-router.put("/:id", updateIncident);
-router.delete("/:id", deleteIncident);
+router.get("/:id", validateId, getIncidentById);
+router.put("/:id", validateId, updateIncident);
+router.delete("/:id", validateId, deleteIncident);
 
 module.exports = router;

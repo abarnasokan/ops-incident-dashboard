@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const validateId = require("../middleware/idValidation");
 
 const {
     getUsers,
@@ -8,7 +9,7 @@ const {
 } = require("../controllers/userController");
 
 router.get("/", getUsers);
-router.get("/:id", getUserById);
+router.get("/:id", validateId, getUserById);
 router.post("/", createUser);
 
 module.exports = router;
