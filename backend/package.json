@@ -4,21 +4,34 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "migrate": "node scripts/database.js",
+    "seed": "node scripts/database.js --seed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.6",
+    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.81.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
+    "@opentelemetry/sdk-node": "^0.223.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.1",
     "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.21.0"
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "prettier": "^3.9.9",
+    "supertest": "^7.3.1"
   }
 }
