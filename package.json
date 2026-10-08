@@ -1,0 +1,11 @@
+{
+  "name": "ops-incident-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npm --prefix backend test",
+    "build": "npm --prefix frontend run build",
+    "format": "node backend/node_modules/prettier/bin/prettier.cjs --write backend/src backend/scripts backend/test frontend/src frontend/vite.config.js",
+    "format:check": "node backend/node_modules/prettier/bin/prettier.cjs --check backend/src backend/scripts backend/test frontend/src frontend/vite.config.js"
+  }
+}

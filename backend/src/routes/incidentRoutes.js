@@ -1,25 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const validateIncident = require("../middleware/incidentValidation");
-const validateId = require("../middleware/idValidation");
-
-const {
-    getIncidents,
-    getIncidentById,
-    createIncident,
-    updateIncident,
-    deleteIncident,
-} = require("../controllers/incidentController");
-
-router.post(
-    "/",
-    validateIncident,
-    createIncident
-);
-
-router.get("/", getIncidents);
-router.get("/:id", validateId, getIncidentById);
-router.put("/:id", validateId, updateIncident);
-router.delete("/:id", validateId, deleteIncident);
-
+const router = require("express").Router();
+const validate = require("../validation");
+const c = require("../controllers/incidentController");
+router.get("/", validate.filters, c.getIncidents);
+router.post("/", validate.incident(), c.createIncident);
+router.get("/:id", validate.id, c.getIncidentById);
+router.put("/:id", validate.id, validate.incident(true), c.updateIncident);
+router.patch("/:id", validate.id, validate.incident(true), c.updateIncident);
+router.delete("/:id", validate.id, c.deleteIncident);
+router.post("/:id/comments", validate.id, validate.comment, c.addComment);
 module.exports = router;

@@ -1,0 +1,49 @@
+name: ops-incident-dashboard
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ops_dashboard_demo
+      POSTGRES_USER: ops_demo
+      POSTGRES_PASSWORD: local-demo-password
+    ports: ["127.0.0.1:55432:5432"]
+    volumes: ["ops_demo_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ops_demo -d ops_dashboard_demo"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  app:
+    build: .
+    ports: ["127.0.0.1:5001:5001"]
+    environment:
+      HOST: 0.0.0.0
+      PORT: 5001
+      DATABASE_URL: postgres://ops_demo:local-demo-password@db:5432/ops_dashboard_demo
+      JWT_SECRET: ${JWT_SECRET:-local-demo-secret-change-before-any-hosted-deployment-00001}
+      AUTO_MIGRATE: 'true'
+      DEMO_SEED: 'true'
+      ALLOW_LAB_FAILURES: 'true'
+      OTEL_ENABLED: 'true'
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+    depends_on:
+      db: {condition: service_healthy}
+      otel-collector: {condition: service_started}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+  otel-collector:
+    image: otel/opentelemetry-collector:0.146.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes: ["./otel-collector.yaml:/etc/otelcol/config.yaml:ro"]
+    depends_on: [jaeger]
+  jaeger:
+    image: jaegertracing/all-in-one:1.76.0
+    environment: {COLLECTOR_OTLP_ENABLED: 'true'}
+    ports: ["127.0.0.1:16686:16686"]
+volumes:
+  ops_demo_data:
